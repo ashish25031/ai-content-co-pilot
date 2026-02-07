@@ -2,8 +2,15 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 
 async function test() {
-    const key = "REMOVED";
+    const key = process.env.GEMINI_API_KEY;
     let output = "";
+
+    if (!key) {
+        output = "ERROR: GEMINI_API_KEY not set";
+        fs.writeFileSync('final_test_latest.txt', output);
+        return;
+    }
+
     const genAI = new GoogleGenerativeAI(key);
 
     try {
@@ -16,4 +23,5 @@ async function test() {
 
     fs.writeFileSync('final_test_latest.txt', output);
 }
+
 test();
